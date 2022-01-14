@@ -10,7 +10,7 @@ const prod = merge.merge(common, {
   mode: "production",
   plugins: [
     // 压缩抽离后的css文件,开发环境不需要做css压缩，后面放到生产环境
-    new OptimizeCssPlugin(),
+    new OptimizeCssPlugin(), 
   ],
 });
 

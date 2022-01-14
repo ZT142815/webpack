@@ -26,6 +26,20 @@ const CompressAssetsPlugin = require("./plugin");
 
 // const Happypack = require("happypack");
 
+// 压缩js文件
+const TerserPlugin = require('terser-webpack-plugin')
+
+// 移除无用css
+const PurgecssWebpackPlugin = require('purgecss-webpack-plugin')
+const glob = require('glob');
+const PATHS = {
+  src: path.resolve(__dirname,'src')
+}
+
+// 可以读取.env文件，获取值
+require('dotenv').config();
+ 
+
 const loaderPath = path.resolve(__dirname, "../loaders");
 
 const common = {
@@ -48,7 +62,7 @@ const common = {
     modules: ["node_modules"], //指定查找目录
   },
   resolveLoader: {
-    modules: [loaderPath, "node_modules"], //创建自己的loader
+    modules: [loaderPath, "node_modules"], //创建自己的loader，自定义loader
   },
   externals: {
     //防止某些包打包到bundle中，比如从cdn引入的jquery
@@ -60,6 +74,10 @@ const common = {
   },
   // 抽离公共代码
   optimization: {
+    minimize: true, //开启最小化
+    minimizer: [
+      new TerserPlugin(), //压缩js
+    ],
     runtimeChunk: {
       name: "manifest",
     },
@@ -95,13 +113,10 @@ const common = {
             exclude: /node_modules/,
             include: [path.resolve(__dirname, "../src")],
             use: [
-              // {
-              //   loader: "cache-loader",
-              //   options: {
-              //     workers: 3, //thread-loader开启线程池，开线程和线程通讯都需要时间
-              //   },
-              // },
-              { loader: "log-loader" },
+              {
+                loader: "cache-loader",
+              },
+              { loader: "log-loader" }, //自定义loader
               {
                 loader: "babel-loader",
                 options: {
@@ -127,7 +142,7 @@ const common = {
             ],
           },
           {
-            test: /\.(png|svg|jpg|gif)$/,
+            test: /\.(png|svg|jpg|gif)$/, //压缩图片可以使用image-webpack-plugin
             use: {
               loader: "file-loader",
               options: {
@@ -151,11 +166,20 @@ const common = {
     new MiniCssExtractPlugin({
       filename: "css/[name].css",
     }),
+    
+    new PurgecssWebpackPlugin({
+      paths: glob.sync(`${PATHS.src}/**/*`,{nodir: true})
+    }),
     // 将我们打包好的js代码动态的插入到html中
     new HtmlWebpackPlugin({
       titel: "development",
       template: "./index.html",
       filename: "index.html",
+      //压缩html
+      minify: {
+        collapseWhitespace: true,  //压缩空格
+        removeComments: true,  //去除注释
+      }
     }),
     // 构建进度条
     new ProgressBarPlugin({
@@ -172,6 +196,7 @@ const common = {
     new CompressAssetsPlugin({
       output: "result.zip",
     }),
+    
     // new friendlyErrorsWebpackPlugin({
     //   onErrors: (severity,errors) => {
     //     console.log(123123,errors[0])
@@ -187,7 +212,7 @@ const common = {
 
     // 定义环境变量
     // new webpack.DefinePlugin({
-    //   DEV: JSON.stringify("dev"),
+    //   DEV: JSON.stringify("dev"), //可以在外部取
     // }),
 
     // 项目不复杂的时候不需要用，因为进程的分配和管理也需要消耗时间
