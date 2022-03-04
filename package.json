@@ -1,0 +1,19 @@
+{
+  "name": "react-ts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZT142815/react-ts.git"
+  },
+  "author": "周涛 <zhoutao@qianmi.com>",
+  "license": "MIT",
+  "description": "npm init",
+  "bugs": {
+    "url": "https://github.com/ZT142815/react-ts/issues"
+  },
+  "homepage": "https://github.com/ZT142815/react-ts#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
