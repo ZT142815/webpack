@@ -22,7 +22,7 @@
     npm文件主要用来设置项目的npm源，不在需要每个开发本地设置
     一般配置为：
     registry=https://registry.npm.taobao.org/
-## \#
+##############
 
 
 
