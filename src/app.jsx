@@ -10,6 +10,7 @@ const App = () => {
       <div>
         <Home/>
         <Login />
+        <div>12312312</div>
       </div>
   );
 };
