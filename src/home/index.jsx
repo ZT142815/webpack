@@ -19,6 +19,7 @@ const Home = (props) => {
             <div>我是</div>
             <button onClick={addClick}>+</button>
             <button onClick={cleanClick}>重置</button>
+            <div>123123123</div>
         </div>
     );
 }
