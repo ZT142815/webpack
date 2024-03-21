@@ -10,8 +10,7 @@ const App = () => {
       <div>
         <Home/>
         <Login />
-        <div>12312312</div>
-        <div>123123123</div>
+        <div>23123123123123</div>
       </div>
   );
 };
